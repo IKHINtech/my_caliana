@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -7,6 +6,7 @@ import 'package:my_caliana/const/colors.dart';
 import 'package:my_caliana/model/user.dart';
 import 'package:my_caliana/provider/user_provider.dart';
 import 'package:my_caliana/widgets/back_dialog.dart';
+import 'package:my_caliana/widgets/custom_appbar.dart';
 import 'package:my_caliana/widgets/custom_label.dart';
 import 'package:my_caliana/widgets/rounded_button.dart';
 import 'package:provider/provider.dart';
@@ -47,18 +47,9 @@ class KonfirmasiDataScreenState extends State<KonfirmasiDataScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_rounded,
-          ),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        centerTitle: true,
-        title: Text(
-          "Konfirmasi Data",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+      appBar: customAppbar(
+        context,
+        "Konfirmasi Data",
       ),
       body: PopScope(
         canPop: false,

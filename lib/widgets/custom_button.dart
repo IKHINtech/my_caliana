@@ -22,7 +22,7 @@ class CustomButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(8.0),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.4),
+              color: Colors.grey.withOpacity(0.1),
               spreadRadius: 2,
               blurRadius: 5,
               offset: Offset(0, 3), // changes position of shadow
@@ -37,6 +37,9 @@ class CustomButton extends StatelessWidget {
               children: [
                 Flexible(
                   child: icon,
+                ),
+                SizedBox(
+                  width: 10,
                 ),
                 Text(
                   title,

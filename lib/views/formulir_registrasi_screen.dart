@@ -5,6 +5,7 @@ import 'package:my_caliana/model/user.dart';
 import 'package:my_caliana/provider/user_provider.dart';
 import 'package:my_caliana/views/foto_wajah_screen.dart';
 import 'package:my_caliana/widgets/back_dialog.dart';
+import 'package:my_caliana/widgets/custom_appbar.dart';
 import 'package:my_caliana/widgets/custom_label.dart';
 import 'package:my_caliana/widgets/custom_text_fields.dart';
 import 'package:my_caliana/widgets/rounded_button.dart';
@@ -98,18 +99,9 @@ class _FormulirRegistrasiScreenState extends State<FormulirRegistrasiScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_rounded,
-          ),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        centerTitle: true,
-        title: Text(
-          "Formulir Registrasi",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+      appBar: customAppbar(
+        context,
+        "Formulir Registrasi",
       ),
       body: PopScope(
         canPop: false,
@@ -222,9 +214,11 @@ class _FormulirRegistrasiScreenState extends State<FormulirRegistrasiScreen> {
                       SizedBox(
                         height: 10,
                       ),
-                      ValueListenableBuilder(
+                      ValueListenableBuilder<TextEditingValue>(
                         valueListenable: _controllerEmail,
-                        builder: (context, value, child) => customTextField(
+                        builder:
+                            (BuildContext context, TextEditingValue value, _) =>
+                                customTextField(
                           inputType: TextInputType.emailAddress,
                           controller: _controllerEmail,
                           prefixIcon: Icon(

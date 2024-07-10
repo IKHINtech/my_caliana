@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_caliana/provider/user_provider.dart';
 import 'package:my_caliana/views/beranda_screen.dart';
-import 'package:my_caliana/views/formulir_registrasi_screen.dart';
 import 'package:provider/provider.dart';
 
 List<CameraDescription> cameras = [];

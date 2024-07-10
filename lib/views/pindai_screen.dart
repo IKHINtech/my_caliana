@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:my_caliana/model/user.dart';
 import 'package:my_caliana/provider/user_provider.dart';
 import 'package:my_caliana/views/formulir_registrasi_screen.dart';
+import 'package:my_caliana/widgets/custom_appbar.dart';
+import 'package:my_caliana/widgets/custom_bg.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
@@ -79,10 +81,7 @@ class _PindaiScreenState extends State<PindaiScreen> {
               builder: (context) => FormulirRegistrasiScreen(),
             ));
       }
-      // } else {
-      //   if (!context.mounted) return;
-      //   Navigator.pop(context, "error");
-      // }
+
       loadingTake.value = false;
     } catch (e) {
       loadingTake.value = false;
@@ -103,100 +102,95 @@ class _PindaiScreenState extends State<PindaiScreen> {
   void dispose() {
     // Dispose of the controller when the widget is disposed.
     _controller.dispose();
+    loadingTake.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_rounded,
-          ),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        centerTitle: true,
-        title: Text(
-          "Pindai ${widget.title}",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18.0),
-        child: FutureBuilder<void>(
-          future: _initializeControllerFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Tempatkan ${widget.title} Anda di dalam kotak.",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+    return Stack(
+      children: customBg(
+        context,
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: customAppbar(context, "Pindai ${widget.title}"),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18.0),
+            child: FutureBuilder<void>(
+              future: _initializeControllerFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Tempatkan ${widget.title} Anda di dalam kotak.",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  Container(
-                    height: MediaQuery.of(context).size.height / 4,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    width: double.infinity,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: CameraPreview(_controller),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 30.0),
-                      child: Align(
-                        child: ValueListenableBuilder(
-                          valueListenable: loadingTake,
-                          builder: (BuildContext context, bool value, _) =>
-                              InkWell(
-                            onTap: () async {
-                              await takePhoto(context: context);
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(8),
-                              child: value
-                                  ? CircularProgressIndicator()
-                                  : Column(
-                                      children: const [
-                                        Icon(
-                                          Icons.camera_alt_outlined,
+                      Container(
+                        height: MediaQuery.of(context).size.height / 4,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        width: double.infinity,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: CameraPreview(_controller),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 30.0),
+                          child: Align(
+                            child: ValueListenableBuilder(
+                              valueListenable: loadingTake,
+                              builder: (BuildContext context, bool value, _) =>
+                                  InkWell(
+                                onTap: () async {
+                                  await takePhoto(context: context);
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(8),
+                                  child: value
+                                      ? CircularProgressIndicator()
+                                      : Column(
+                                          children: const [
+                                            Icon(
+                                              Icons.camera_alt_outlined,
+                                            ),
+                                            Text(
+                                              "Ambil Foto",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 12),
+                                            )
+                                          ],
                                         ),
-                                        Text(
-                                          "Ambil Foto",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 12),
-                                        )
-                                      ],
-                                    ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                ],
-              );
-            } else {
-              // Otherwise, display a loading indicator.
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          },
+                    ],
+                  );
+                } else {
+                  // Otherwise, display a loading indicator.
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
+            ),
+          ),
         ),
       ),
     );

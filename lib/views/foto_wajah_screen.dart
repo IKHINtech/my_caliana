@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
@@ -9,9 +8,9 @@ import 'package:my_caliana/const/colors.dart';
 import 'package:my_caliana/main.dart';
 import 'package:my_caliana/model/user.dart';
 import 'package:my_caliana/provider/user_provider.dart';
-import 'package:my_caliana/views/formulir_registrasi_screen.dart';
 import 'package:my_caliana/views/konfirmasi_data_screen.dart';
 import 'package:my_caliana/widgets/back_dialog.dart';
+import 'package:my_caliana/widgets/custom_bg.dart';
 import 'package:my_caliana/widgets/rounded_button.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -123,159 +122,170 @@ class _FacePhotoScreenState extends State<FacePhotoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_rounded,
+    return Stack(
+        children: customBg(
+      context,
+      Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios_rounded,
+            ),
+            onPressed: () => Navigator.of(context).pop(),
           ),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        centerTitle: true,
-        title: ValueListenableBuilder<XFile?>(
-          valueListenable: file,
-          builder: (BuildContext context, XFile? value, _) => Text(
-            value == null ? "Ambil Foto Wajah" : "Periksa Kualitas Foto",
-            style: TextStyle(fontWeight: FontWeight.bold),
+          centerTitle: true,
+          title: ValueListenableBuilder<XFile?>(
+            valueListenable: file,
+            builder: (BuildContext context, XFile? value, _) => Text(
+              value == null ? "Ambil Foto Wajah" : "Periksa Kualitas Foto",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
           ),
         ),
-      ),
-      body: PopScope(
-        canPop: false,
-        onPopInvoked: (didPop) {
-          if (didPop) {
-            return;
-          }
-          showBackDialog(
-            context: context,
-          );
-        },
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 18.0),
-          child: FutureBuilder<void>(
-            future: _initializeControllerFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      flex: 3,
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: ValueListenableBuilder<XFile?>(
-                          valueListenable: file,
-                          builder: (BuildContext context, XFile? value, _) =>
-                              Text(
-                            value == null
-                                ? "Tolong posisikan wajah Anda di tengah area selfie dan lalu ambil foto."
-                                : "Pastikan foto wajah Anda tidak buram atau di luar bingkai sebelum melanjutkan",
-                            style: TextStyle(fontWeight: FontWeight.normal),
+        body: PopScope(
+          canPop: false,
+          onPopInvoked: (didPop) {
+            if (didPop) {
+              return;
+            }
+            showBackDialog(
+              context: context,
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18.0),
+            child: FutureBuilder<void>(
+              future: _initializeControllerFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: ValueListenableBuilder<XFile?>(
+                            valueListenable: file,
+                            builder: (BuildContext context, XFile? value, _) =>
+                                Text(
+                              value == null
+                                  ? "Tolong posisikan wajah Anda di tengah area selfie dan lalu ambil foto."
+                                  : "Pastikan foto wajah Anda tidak buram atau di luar bingkai sebelum melanjutkan",
+                              style: TextStyle(fontWeight: FontWeight.normal),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Container(
-                      height: MediaQuery.of(context).size.width - 32,
-                      decoration: BoxDecoration(
+                      Container(
+                        height: MediaQuery.of(context).size.width - 32,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: mainColor)),
+                        width: double.infinity,
+                        child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: mainColor)),
-                      width: double.infinity,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: ValueListenableBuilder<XFile?>(
-                          valueListenable: file,
-                          builder: (BuildContext context, XFile? value, _) {
-                            if (value != null) {
-                              return Image.file(
-                                File(value.path),
-                                fit: BoxFit.fill,
-                              );
-                            } else {
-                              return CameraPreview(_controller);
-                            }
-                          },
+                          child: ValueListenableBuilder<XFile?>(
+                            valueListenable: file,
+                            builder: (BuildContext context, XFile? value, _) {
+                              if (value != null) {
+                                return Image.file(
+                                  File(value.path),
+                                  fit: BoxFit.fill,
+                                );
+                              } else {
+                                return CameraPreview(_controller);
+                              }
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 30.0),
-                        child: Align(
-                          child: ValueListenableBuilder(
-                            valueListenable: loadingTake,
-                            builder: (BuildContext context, bool value, _) =>
-                                InkWell(
-                              onTap: () async {
-                                await takePhoto(context: context);
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(8),
-                                child: value
-                                    ? CircularProgressIndicator()
-                                    : ValueListenableBuilder(
-                                        valueListenable: file,
-                                        builder: (context, value, child) {
-                                          if (value == null) {
-                                            return Column(
-                                              children: const [
-                                                Icon(
-                                                  Icons.camera_alt_outlined,
-                                                  color: mainColor,
-                                                ),
-                                                Text(
-                                                  "Ambil Foto",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 12,
+                      Expanded(
+                        flex: 3,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 30.0),
+                          child: Align(
+                            child: ValueListenableBuilder(
+                              valueListenable: loadingTake,
+                              builder: (BuildContext context, bool value, _) =>
+                                  InkWell(
+                                onTap: () async {
+                                  await takePhoto(context: context);
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(8),
+                                  child: value
+                                      ? CircularProgressIndicator()
+                                      : ValueListenableBuilder(
+                                          valueListenable: file,
+                                          builder: (context, value, child) {
+                                            if (value == null) {
+                                              return Column(
+                                                children: const [
+                                                  Icon(
+                                                    Icons.camera_alt_outlined,
                                                     color: mainColor,
                                                   ),
-                                                )
-                                              ],
-                                            );
-                                          } else {
-                                            return Column(
-                                              children: [
-                                                RoundedButton(
-                                                  title: "Sesuai dan lanjutkan",
-                                                  isMain: true,
-                                                  onPressed: navigateAndSetData,
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                RoundedButton(
-                                                  title: "Ulangi Ambil Foto",
-                                                  isMain: false,
-                                                  onPressed: () {
-                                                    file.value = null;
-                                                  },
-                                                )
-                                              ],
-                                            );
-                                          }
-                                        },
-                                      ),
+                                                  Text(
+                                                    "Ambil Foto",
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 12,
+                                                      color: mainColor,
+                                                    ),
+                                                  )
+                                                ],
+                                              );
+                                            } else {
+                                              return Column(
+                                                children: [
+                                                  RoundedButton(
+                                                    title:
+                                                        "Sesuai dan lanjutkan",
+                                                    isMain: true,
+                                                    onPressed:
+                                                        navigateAndSetData,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  RoundedButton(
+                                                    title: "Ulangi Ambil Foto",
+                                                    isMain: false,
+                                                    onPressed: () {
+                                                      file.value = null;
+                                                    },
+                                                  )
+                                                ],
+                                              );
+                                            }
+                                          },
+                                        ),
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                );
-              } else {
-                // Otherwise, display a loading indicator.
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            },
+                    ],
+                  );
+                } else {
+                  // Otherwise, display a loading indicator.
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
+            ),
           ),
         ),
       ),
-    );
+    ));
   }
 }
