@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_caliana/main.dart';
 import 'package:my_caliana/views/pindai_screen.dart';
 import 'package:my_caliana/widgets/custom_button.dart';
 
@@ -42,7 +43,10 @@ class _IdentitasScreenState extends State<IdentitasScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PindaiScreen(title: "e-KTP"),
+                        builder: (context) => PindaiScreen(
+                          title: "e-KTP",
+                          cameras: cameras,
+                        ),
                       ));
                 },
                 icon: Icon(Icons.abc),
@@ -52,7 +56,8 @@ class _IdentitasScreenState extends State<IdentitasScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PindaiScreen(title: "SIM"),
+                        builder: (context) =>
+                            PindaiScreen(title: "SIM", cameras: cameras),
                       ));
                 },
                 icon: Icon(Icons.abc),
@@ -62,7 +67,8 @@ class _IdentitasScreenState extends State<IdentitasScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PindaiScreen(title: "Paspor"),
+                        builder: (context) =>
+                            PindaiScreen(title: "Paspor", cameras: cameras),
                       ));
                 },
                 icon: Icon(Icons.abc),
@@ -72,7 +78,8 @@ class _IdentitasScreenState extends State<IdentitasScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PindaiScreen(title: "Lainnya"),
+                        builder: (context) =>
+                            PindaiScreen(title: "Lainnya", cameras: cameras),
                       ));
                 },
                 icon: Icon(Icons.abc),

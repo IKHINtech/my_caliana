@@ -1,9 +1,22 @@
+import 'dart:developer';
+
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_caliana/views/beranda_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-void main() {
+List<CameraDescription> cameras = [];
+void main() async {
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+    cameras = await availableCameras();
+  } catch (e) {
+    if (e is CameraException) {
+      log('Error in fetching the cameras: $e');
+    }
+    log('$e');
+  }
   runApp(const MyApp());
 }
 
