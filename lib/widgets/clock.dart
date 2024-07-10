@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Clock extends StatefulWidget {
+  const Clock({super.key});
   @override
-  _ClockState createState() => _ClockState();
+  State<Clock> createState() => _ClockState();
 }
 
 class _ClockState extends State<Clock> {
@@ -30,7 +31,9 @@ class _ClockState extends State<Clock> {
 
   @override
   Widget build(BuildContext context) {
-    String formattedDate = DateFormat('EEE, MMM d, yyyy').format(_now);
+    String formattedDate = DateFormat('EEE, d MMMM yyyy', "id_ID").format(
+      _now,
+    );
     String formattedTime = DateFormat('hh:mm:ss a').format(_now);
 
     return Column(
@@ -39,11 +42,14 @@ class _ClockState extends State<Clock> {
       children: [
         Text(
           formattedDate,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(
+          height: 8,
         ),
         Text(
           formattedTime,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
         ),
       ],
     );
