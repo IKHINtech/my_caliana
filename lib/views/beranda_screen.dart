@@ -4,6 +4,7 @@ import 'package:my_caliana/const/colors.dart';
 import 'package:my_caliana/views/identitas_screen.dart';
 import 'package:my_caliana/widgets/clock.dart';
 import 'package:my_caliana/widgets/custom_text_fields.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class BerandaScreen extends StatefulWidget {
   const BerandaScreen({super.key});
@@ -14,6 +15,18 @@ class BerandaScreen extends StatefulWidget {
 
 class _BerandaScreenState extends State<BerandaScreen> {
   ValueNotifier<bool> isDialOpen = ValueNotifier<bool>(false);
+  Future<void> _checkPermissions() async {
+    PermissionStatus cameraStatus = await Permission.camera.status;
+    PermissionStatus locationStatus = await Permission.location.status;
+
+    if (!cameraStatus.isGranted) {
+      await Permission.camera.request();
+    }
+
+    if (!locationStatus.isGranted) {
+      await Permission.location.request();
+    }
+  }
 
   final TextEditingController _searchController = TextEditingController();
 
@@ -30,119 +43,80 @@ class _BerandaScreenState extends State<BerandaScreen> {
   var buttonSize = const Size(56.0, 56.0);
   var childrenButtonSize = const Size(56.0, 56.0);
 
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+  @override
+  void initState() {
+    _checkPermissions();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: bgGrey,
-      //   leading: Container(
-      //     margin: EdgeInsets.only(left: 16),
-      //     child: Image.asset('assets/images/icon-removebg-preview.png'),
-      //   ),
-      //   actions: [
-      //     // Container(
-      //     //   color: Colors.red,
-      //     //   child: Text(
-      //     //     'recruitment',
-      //     //     style: TextStyle(color: customGrey, fontSize: 16),
-      //     //   ),
-      //     // ),
-      //     // Container(
-      //     //   child: Stack(
-      //     //     fit: StackFit.expand,
-      //     //     alignment: Alignment.center,
-      //     //     children: [
-      //     //       CircleAvatar(
-      //     //         backgroundColor: Colors.white,
-      //     //         backgroundImage: AssetImage('assets/images/profile.jpg'),
-      //     //       ),
-      //     //     ],
-      //     //   ),
-      //     // ),
-      //     Container(
-      //         padding: EdgeInsets.all(8),
-      //         decoration: BoxDecoration(
-      //           color: Colors.white,
-      //           borderRadius: BorderRadius.circular(12),
-      //         ),
-      //         margin: EdgeInsets.only(right: 16),
-      //         child: Material(
-      //           color: Colors.white,
-      //           child: InkWell(
-      //             child: Icon(
-      //               Icons.notifications_none_rounded,
-      //               size: 30,
-      //               color: customGrey,
-      //             ),
-      //           ),
-      //         ))
-      //   ],
-      // ),
-      // body: Container(
-      //   color: bgGrey,
-      //   child: SingleChildScrollView(
-      //     child: Column(
-      //       children: [Clock()],
-      //     ),
-      //   ),
-      // ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   type: BottomNavigationBarType.fixed,
-      //   items: const [
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.home),
-      //       label: 'Home',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.business),
-      //       label: 'Business',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.confirmation_number_outlined),
-      //       label: 'Tiket',
-      //     ),
-      //   ],
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {},
-      // ),
-
+      appBar: AppBar(
+        backgroundColor: bgGrey,
+        leading: Container(
+          margin: EdgeInsets.only(left: 16),
+          child: Image.asset('assets/images/icon-removebg-preview.png'),
+        ),
+        actions: [
+          // Container(
+          //   color: Colors.red,
+          //   child: Text(
+          //     'recruitment',
+          //     style: TextStyle(color: customGrey, fontSize: 16),
+          //   ),
+          // ),
+          // Container(
+          //   child: Stack(
+          //     fit: StackFit.expand,
+          //     alignment: Alignment.center,
+          //     children: [
+          //       CircleAvatar(
+          //         backgroundColor: Colors.white,
+          //         backgroundImage: AssetImage('assets/images/profile.jpg'),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          Container(
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              margin: EdgeInsets.only(right: 16),
+              child: Material(
+                color: Colors.white,
+                child: InkWell(
+                  child: Icon(
+                    Icons.notifications_none_rounded,
+                    size: 30,
+                    color: customGrey,
+                  ),
+                ),
+              ))
+        ],
+      ),
       body: Container(
-        padding: EdgeInsets.symmetric(vertical: 20),
         color: bgGrey,
-        child: customTextField(
-            border: false,
-            controller: _searchController,
-            label: "Cari",
-            hint: "Cari Fitur",
-            prefixIcon: Icon(Icons.search),
-            required: false,
-            onSaved: (val) {}),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Clock(),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                color: bgGrey,
+                child: customTextField(
+                    isBorder: false,
+                    controller: _searchController,
+                    hint: "Cari Fitur",
+                    prefixIcon: Icon(Icons.search),
+                    required: false,
+                    onSaved: (val) {}),
+              )
+            ],
+          ),
+        ),
       ),
       extendBody: true,
       floatingActionButton: SpeedDial(

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:my_caliana/const/colors.dart';
 
 TextFormField customTextField({
   required TextEditingController controller,
-  required String label,
   required bool required,
   required Function(String?) onSaved,
   VoidCallback? onTap,
+  Function(String?)? onChange,
   String? hint,
   Widget? prefixIcon,
   bool? isEmail,
   int? maxLines,
-  required bool border,
+  required bool isBorder,
   TextInputType? inputType,
 }) {
   return TextFormField(
@@ -19,28 +20,63 @@ TextFormField customTextField({
     maxLines: maxLines,
     controller: controller,
     decoration: InputDecoration(
+      errorStyle: TextStyle(fontStyle: FontStyle.italic),
+      contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
       fillColor: Colors.white,
       isDense: true,
-      prefix: prefixIcon,
-      border: border
+      prefixIcon: prefixIcon,
+      prefixIconColor: controller.text == "" ? customGrey : mainColor,
+      border: isBorder == true
           ? OutlineInputBorder(
               borderRadius: BorderRadius.all(
-                Radius.circular(10),
+                Radius.circular(11),
+              ),
+              borderSide: BorderSide(
+                color: controller.text == "" ? Colors.grey : mainColor,
               ),
             )
           : InputBorder.none,
-      // labelText: label,
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: controller.text == "" ? Colors.grey : mainColor,
+          width: 0.5,
+        ), // Ubah warna fokus di sini
+        borderRadius: BorderRadius.all(
+          Radius.circular(11),
+        ),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: controller.text == "" ? Colors.grey : mainColor,
+          width: 0.5,
+        ),
+        borderRadius: BorderRadius.all(
+          Radius.circular(11),
+        ),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: controller.text == "" ? Colors.grey : mainColor,
+          width: 0.5,
+        ),
+        borderRadius: BorderRadius.all(
+          Radius.circular(11),
+        ),
+      ),
       hintText: hint ?? "Masukan Data",
+      hintStyle: TextStyle(fontSize: 13),
+      // helperStyle: TextStyle(fontStyle: FontStyle.italic),
     ),
+    onChanged: onChange,
     validator: required
         ? (value) {
             if (value!.isEmpty) {
-              return "$label Wajib diisi !";
+              return "Wajib diisi !";
             }
             if (isEmail != null && isEmail == true) {
               if (!RegExp(r"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")
                   .hasMatch(value)) {
-                return 'Enter a valid email address';
+                return 'Format email tidak valid';
               }
             }
             return null;
@@ -50,7 +86,7 @@ TextFormField customTextField({
               if (isEmail != null && isEmail == true) {
                 if (!RegExp(r"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")
                     .hasMatch(value)) {
-                  return 'Enter a valid email address';
+                  return 'Format email tidak valid';
                 }
               }
             }

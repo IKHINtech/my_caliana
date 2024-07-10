@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:my_caliana/main.dart';
 import 'package:my_caliana/views/pindai_screen.dart';
 import 'package:my_caliana/widgets/custom_button.dart';
@@ -28,7 +29,7 @@ class _IdentitasScreenState extends State<IdentitasScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 60.0, horizontal: 20),
         child: GridView.count(
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
@@ -49,40 +50,43 @@ class _IdentitasScreenState extends State<IdentitasScreen> {
                         ),
                       ));
                 },
-                icon: Icon(Icons.abc),
+                icon: Icon(TablerIcons.id),
                 title: "e-KTP"),
             CustomButton(
                 onPressed: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            PindaiScreen(title: "SIM", cameras: cameras),
-                      ));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          PindaiScreen(title: "SIM", cameras: cameras),
+                    ),
+                  );
                 },
-                icon: Icon(Icons.abc),
+                icon: Icon(TablerIcons.id),
                 title: "SIM"),
             CustomButton(
                 onPressed: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            PindaiScreen(title: "Paspor", cameras: cameras),
-                      ));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          PindaiScreen(title: "Paspor", cameras: cameras),
+                    ),
+                  );
                 },
-                icon: Icon(Icons.abc),
+                icon: Icon(TablerIcons.id),
                 title: "Paspor"),
             CustomButton(
                 onPressed: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            PindaiScreen(title: "Lainnya", cameras: cameras),
-                      ));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          PindaiScreen(title: "Lainnya", cameras: cameras),
+                    ),
+                  );
                 },
-                icon: Icon(Icons.abc),
+                icon: Icon(TablerIcons.id),
                 title: "Lainnya"),
           ],
         ),

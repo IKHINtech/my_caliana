@@ -3,8 +3,11 @@ import 'dart:developer';
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:my_caliana/views/formulir_registrasi.dart';
+import 'package:my_caliana/model/user.dart';
+import 'package:my_caliana/provider/user_provider.dart';
+import 'package:my_caliana/views/formulir_registrasi_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 
 class PindaiScreen extends StatefulWidget {
   final String title;
@@ -17,6 +20,7 @@ class PindaiScreen extends StatefulWidget {
 }
 
 class _PindaiScreenState extends State<PindaiScreen> {
+  final User user = User();
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
   ValueNotifier<bool> loadingTake = ValueNotifier<bool>(false);
@@ -57,10 +61,10 @@ class _PindaiScreenState extends State<PindaiScreen> {
         await _controller.setExposureMode(ExposureMode.locked);
       }
       final image = await _controller.takePicture();
+      user.photoCard = image.path;
       if (!context.mounted) return;
-      // File? resultCheck = await _checkImage(image.path);
-      // if (image ) {
-      final x = await image.readAsBytes();
+      UserProvider userProv = Provider.of<UserProvider>(context, listen: false);
+      userProv.setUser(data: user);
       if (!context.mounted) return;
       if (kIsWeb) {
         Navigator.push(
@@ -80,7 +84,7 @@ class _PindaiScreenState extends State<PindaiScreen> {
       //   Navigator.pop(context, "error");
       // }
       loadingTake.value = false;
-    } catch (e, stackTrace) {
+    } catch (e) {
       loadingTake.value = false;
       if (!context.mounted) return;
       Navigator.pop(context, 'error');
