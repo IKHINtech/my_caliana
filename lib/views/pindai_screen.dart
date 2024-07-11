@@ -77,7 +77,21 @@ class _PindaiScreenState extends State<PindaiScreen> {
     } catch (e) {
       loadingTake.value = false;
       if (!context.mounted) return;
-      Navigator.pop(context, 'error');
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Error'),
+          content: Text('Error : $e.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
       log('$e');
     }
   }

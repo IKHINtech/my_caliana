@@ -189,11 +189,12 @@ class KonfirmasiDataScreenState extends State<KonfirmasiDataScreen> {
                               ],
                             ),
                           );
-                          Navigator.pushReplacement(
+                          Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
                               builder: (context) => BerandaScreen(),
                             ),
+                            (route) => false,
                           );
                         },
                       ),

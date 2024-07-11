@@ -48,11 +48,12 @@ void showBackDialog({
                       ),
                       child: const Text('Ya, batalkan'),
                       onPressed: () {
-                        Navigator.pushReplacement(
+                        Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
                             builder: (context) => BerandaScreen(),
                           ),
+                          (route) => false,
                         );
                       },
                     ),
