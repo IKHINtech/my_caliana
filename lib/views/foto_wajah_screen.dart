@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:my_caliana/const/colors.dart';
 import 'package:my_caliana/main.dart';
 import 'package:my_caliana/model/user.dart';
@@ -125,38 +126,38 @@ class _FacePhotoScreenState extends State<FacePhotoScreen> {
     return Stack(
         children: customBg(
       context,
-      Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back_ios_rounded,
+      PopScope(
+        canPop: false,
+        onPopInvoked: (didPop) {
+          if (didPop) {
+            return;
+          }
+          showBackDialog(
+            context: context,
+          );
+        },
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios_rounded,
+              ),
+              onPressed: () => Navigator.maybePop(context),
             ),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          centerTitle: true,
-          title: ValueListenableBuilder<XFile?>(
-            valueListenable: file,
-            builder: (BuildContext context, XFile? value, _) => Text(
-              value == null ? "Ambil Foto Wajah" : "Periksa Kualitas Foto",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
+            centerTitle: true,
+            title: ValueListenableBuilder<XFile?>(
+              valueListenable: file,
+              builder: (BuildContext context, XFile? value, _) => Text(
+                value == null ? "Ambil Foto Wajah" : "Periksa Kualitas Foto",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
             ),
           ),
-        ),
-        body: PopScope(
-          canPop: false,
-          onPopInvoked: (didPop) {
-            if (didPop) {
-              return;
-            }
-            showBackDialog(
-              context: context,
-            );
-          },
-          child: Padding(
+          body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18.0),
             child: FutureBuilder<void>(
               future: _initializeControllerFuture,
@@ -210,6 +211,7 @@ class _FacePhotoScreenState extends State<FacePhotoScreen> {
                         child: Padding(
                           padding: const EdgeInsets.only(top: 30.0),
                           child: Align(
+                            alignment: Alignment.topCenter,
                             child: ValueListenableBuilder(
                               valueListenable: loadingTake,
                               builder: (BuildContext context, bool value, _) =>
@@ -220,7 +222,9 @@ class _FacePhotoScreenState extends State<FacePhotoScreen> {
                                 child: Container(
                                   padding: EdgeInsets.all(8),
                                   child: value
-                                      ? CircularProgressIndicator()
+                                      ? CircularProgressIndicator(
+                                          color: mainColor,
+                                        )
                                       : ValueListenableBuilder(
                                           valueListenable: file,
                                           builder: (context, value, child) {
@@ -278,7 +282,9 @@ class _FacePhotoScreenState extends State<FacePhotoScreen> {
                 } else {
                   // Otherwise, display a loading indicator.
                   return const Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(
+                      color: mainColor,
+                    ),
                   );
                 }
               },

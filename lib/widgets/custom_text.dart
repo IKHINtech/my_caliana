@@ -18,7 +18,8 @@ class LimitedLengthText extends StatelessWidget {
 
     return Text(
       displayedText,
-      style: TextStyle(fontSize: 14, color: customGrey),
+      style: TextStyle(
+          fontSize: 14, color: customGrey, fontWeight: FontWeight.w600),
     );
   }
 }

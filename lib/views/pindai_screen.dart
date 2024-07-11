@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:my_caliana/const/colors.dart';
 import 'package:my_caliana/model/user.dart';
 import 'package:my_caliana/provider/user_provider.dart';
 import 'package:my_caliana/views/formulir_registrasi_screen.dart';
@@ -37,12 +38,9 @@ class _PindaiScreenState extends State<PindaiScreen> {
 
   void _initFrontCamera() {
     _controller = CameraController(
-      // Get a specific camera from the list of available cameras.
       widget.cameras.first,
-      // Define the resolution to use.
       ResolutionPreset.medium,
     );
-    // Next, initialize the controller. This returns a Future.
     _initializeControllerFuture = _controller.initialize();
   }
 
@@ -67,20 +65,13 @@ class _PindaiScreenState extends State<PindaiScreen> {
       if (!context.mounted) return;
       UserProvider userProv = Provider.of<UserProvider>(context, listen: false);
       userProv.setUser(data: user);
-      if (!context.mounted) return;
-      if (kIsWeb) {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => FormulirRegistrasiScreen(),
-            ));
-      } else {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => FormulirRegistrasiScreen(),
-            ));
-      }
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => FormulirRegistrasiScreen(),
+        ),
+      );
 
       loadingTake.value = false;
     } catch (e) {
@@ -100,7 +91,6 @@ class _PindaiScreenState extends State<PindaiScreen> {
 
   @override
   void dispose() {
-    // Dispose of the controller when the widget is disposed.
     _controller.dispose();
     loadingTake.dispose();
     super.dispose();
@@ -150,6 +140,7 @@ class _PindaiScreenState extends State<PindaiScreen> {
                         child: Padding(
                           padding: const EdgeInsets.only(top: 30.0),
                           child: Align(
+                            alignment: Alignment.topCenter,
                             child: ValueListenableBuilder(
                               valueListenable: loadingTake,
                               builder: (BuildContext context, bool value, _) =>
@@ -160,7 +151,9 @@ class _PindaiScreenState extends State<PindaiScreen> {
                                 child: Container(
                                   padding: EdgeInsets.all(8),
                                   child: value
-                                      ? CircularProgressIndicator()
+                                      ? CircularProgressIndicator(
+                                          color: mainColor,
+                                        )
                                       : Column(
                                           children: const [
                                             Icon(
@@ -183,9 +176,10 @@ class _PindaiScreenState extends State<PindaiScreen> {
                     ],
                   );
                 } else {
-                  // Otherwise, display a loading indicator.
                   return const Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(
+                      color: mainColor,
+                    ),
                   );
                 }
               },

@@ -6,7 +6,7 @@ AppBar customAppbar(BuildContext context, String title) {
       icon: Icon(
         Icons.arrow_back_ios_rounded,
       ),
-      onPressed: () => Navigator.of(context).pop(),
+      onPressed: () => Navigator.maybePop(context),
     ),
     centerTitle: true,
     title: Text(

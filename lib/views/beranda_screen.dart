@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:my_caliana/const/colors.dart';
@@ -20,21 +18,8 @@ class BerandaScreen extends StatefulWidget {
 
 class _BerandaScreenState extends State<BerandaScreen> {
   ValueNotifier<bool> isDialOpen = ValueNotifier<bool>(false);
-  Future<void> _checkPermissions() async {
-    PermissionStatus cameraStatus = await Permission.camera.status;
-    PermissionStatus locationStatus = await Permission.location.status;
-
-    if (!cameraStatus.isGranted) {
-      await Permission.camera.request();
-    }
-
-    if (!locationStatus.isGranted) {
-      await Permission.location.request();
-    }
-  }
-
   final TextEditingController _searchController = TextEditingController();
-  ValueNotifier<int> _selectedFilter = ValueNotifier<int>(0);
+  final ValueNotifier<int> _selectedFilter = ValueNotifier<int>(0);
 
   var renderOverlay = true;
   var visibled = true;
@@ -49,10 +34,30 @@ class _BerandaScreenState extends State<BerandaScreen> {
   var buttonSize = const Size(56.0, 56.0);
   var childrenButtonSize = const Size(56.0, 56.0);
 
+  Future<void> _checkPermissions() async {
+    PermissionStatus cameraStatus = await Permission.camera.status;
+    PermissionStatus locationStatus = await Permission.location.status;
+
+    if (!cameraStatus.isGranted) {
+      await Permission.camera.request();
+    }
+
+    if (!locationStatus.isGranted) {
+      await Permission.location.request();
+    }
+  }
+
   @override
   void initState() {
     _checkPermissions();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _selectedFilter.dispose();
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -61,18 +66,13 @@ class _BerandaScreenState extends State<BerandaScreen> {
       appBar: AppBar(
         backgroundColor: bgGrey,
         surfaceTintColor: Colors.transparent,
-        leading: Container(
-          margin: EdgeInsets.only(left: 16),
+        title: Container(
+          height: 70,
+          decoration: BoxDecoration(),
+          margin: EdgeInsets.only(left: 8),
           child: Image.asset('assets/images/icon-removebg-preview.png'),
         ),
         actions: [
-          // Container(
-          //   color: Colors.red,
-          //   child: Text(
-          //     'recruitment',
-          //     style: TextStyle(color: customGrey, fontSize: 16),
-          //   ),
-          // ),
           Container(
             padding: EdgeInsets.only(right: 10),
             child: Row(
@@ -80,12 +80,14 @@ class _BerandaScreenState extends State<BerandaScreen> {
                 Container(
                   transform: Matrix4.translationValues(4.0, 0.0, 0.0),
                   padding:
-                      EdgeInsets.only(left: 8, top: 4, bottom: 4, right: 3),
+                      EdgeInsets.only(left: 12, top: 5, bottom: 5, right: 3),
                   decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          bottomLeft: Radius.circular(20))),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      bottomLeft: Radius.circular(20),
+                    ),
+                  ),
                   child: LimitedLengthText(
                     text: "recruitment",
                     maxLength: 8,
@@ -96,7 +98,7 @@ class _BerandaScreenState extends State<BerandaScreen> {
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: Colors.white, // Warna border
-                      width: 2.0, // Lebar border
+                      width: 2.5, // Lebar border
                     ),
                   ),
                   child: CircleAvatar(
@@ -108,22 +110,23 @@ class _BerandaScreenState extends State<BerandaScreen> {
             ),
           ),
           Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              margin: EdgeInsets.only(right: 16),
-              child: Material(
-                color: Colors.white,
-                child: InkWell(
-                  child: Icon(
-                    Icons.notifications_none_rounded,
-                    size: 30,
-                    color: customGrey,
-                  ),
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            margin: EdgeInsets.only(right: 18),
+            child: Material(
+              color: Colors.white,
+              child: InkWell(
+                child: Icon(
+                  TablerIcons.bell,
+                  size: 26,
+                  color: customGrey,
                 ),
-              ))
+              ),
+            ),
+          )
         ],
       ),
       body: Container(

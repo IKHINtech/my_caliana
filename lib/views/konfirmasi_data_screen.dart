@@ -5,6 +5,7 @@ import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:my_caliana/const/colors.dart';
 import 'package:my_caliana/model/user.dart';
 import 'package:my_caliana/provider/user_provider.dart';
+import 'package:my_caliana/views/beranda_screen.dart';
 import 'package:my_caliana/widgets/back_dialog.dart';
 import 'package:my_caliana/widgets/custom_appbar.dart';
 import 'package:my_caliana/widgets/custom_label.dart';
@@ -46,22 +47,22 @@ class KonfirmasiDataScreenState extends State<KonfirmasiDataScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: customAppbar(
-        context,
-        "Konfirmasi Data",
-      ),
-      body: PopScope(
-        canPop: false,
-        onPopInvoked: (didPop) {
-          if (didPop) {
-            return;
-          }
-          showBackDialog(
-            context: context,
-          );
-        },
-        child: Consumer<UserProvider>(
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (didPop) {
+          return;
+        }
+        showBackDialog(
+          context: context,
+        );
+      },
+      child: Scaffold(
+        appBar: customAppbar(
+          context,
+          "Konfirmasi Data",
+        ),
+        body: Consumer<UserProvider>(
           builder: (BuildContext context, UserProvider store, _) => Padding(
             padding: EdgeInsets.all(22),
             child: SingleChildScrollView(
@@ -172,11 +173,26 @@ class KonfirmasiDataScreenState extends State<KonfirmasiDataScreen> {
                       RoundedButton(
                         title: "Check In",
                         isMain: true,
-                        onPressed: () {
-                          Navigator.push(
+                        onPressed: () async {
+                          await showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text('Berhasil'),
+                              content: Text('Check In berhasil.'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('OK'),
+                                ),
+                              ],
+                            ),
+                          );
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => KonfirmasiDataScreen(),
+                              builder: (context) => BerandaScreen(),
                             ),
                           );
                         },

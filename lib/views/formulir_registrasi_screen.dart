@@ -98,22 +98,22 @@ class _FormulirRegistrasiScreenState extends State<FormulirRegistrasiScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: customAppbar(
-        context,
-        "Formulir Registrasi",
-      ),
-      body: PopScope(
-        canPop: false,
-        onPopInvoked: (didPop) {
-          if (didPop) {
-            return;
-          }
-          showBackDialog(
-            context: context,
-          );
-        },
-        child: SingleChildScrollView(
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (didPop) {
+          return;
+        }
+        showBackDialog(
+          context: context,
+        );
+      },
+      child: Scaffold(
+        appBar: customAppbar(
+          context,
+          "Formulir Registrasi",
+        ),
+        body: SingleChildScrollView(
           child: Form(
             key: _fkey,
             child: Padding(
@@ -122,11 +122,21 @@ class _FormulirRegistrasiScreenState extends State<FormulirRegistrasiScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
+                    "1 -- 2",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                        color: customGrey),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
                     "Data Pribadi",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 30,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
