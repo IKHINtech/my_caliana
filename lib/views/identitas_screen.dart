@@ -76,6 +76,7 @@ class _IdentitasScreenState extends State<IdentitasScreen> {
                             color: Colors.grey),
                       ),
                       TextField(
+                        style: TextStyle(color: mainColor),
                         controller: _otherController,
                         decoration: InputDecoration(
                           isDense: true,

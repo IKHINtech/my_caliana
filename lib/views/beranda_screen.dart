@@ -67,7 +67,7 @@ class _BerandaScreenState extends State<BerandaScreen> {
         backgroundColor: bgGrey,
         surfaceTintColor: Colors.transparent,
         title: Container(
-          height: 70,
+          height: 60,
           decoration: BoxDecoration(),
           margin: EdgeInsets.only(left: 8),
           child: Image.asset('assets/images/icon-removebg-preview.png'),

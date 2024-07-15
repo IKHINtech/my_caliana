@@ -64,7 +64,7 @@ class KonfirmasiDataScreenState extends State<KonfirmasiDataScreen> {
         ),
         body: Consumer<UserProvider>(
           builder: (BuildContext context, UserProvider store, _) => Padding(
-            padding: EdgeInsets.all(22),
+            padding: EdgeInsets.all(24),
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -72,6 +72,7 @@ class KonfirmasiDataScreenState extends State<KonfirmasiDataScreen> {
                     valueListenable: _isOpen,
                     builder: (BuildContext context, List<bool> value, _) =>
                         ExpansionPanelList(
+                      expandIconColor: mainColor,
                       elevation: 0,
                       dividerColor: Colors.transparent,
                       children: [

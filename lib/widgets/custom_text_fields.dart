@@ -19,6 +19,7 @@ TextFormField customTextField({
     keyboardType: inputType,
     maxLines: maxLines,
     controller: controller,
+    style: TextStyle(color: mainColor),
     decoration: InputDecoration(
       errorStyle: TextStyle(fontStyle: FontStyle.italic),
       contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
